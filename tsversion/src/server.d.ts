@@ -78,11 +78,15 @@ export type MMapType<M extends PropertyKey, V = any> = {[I in M]: V};
 export type KMapType<K, V extends Keyed = any> = {[I in keyof K]: V[I]};
 export type MKMapType<M extends PropertyKey, V extends Keyed = any> = {[I in M]: V[I]};
 
-export type Server = EventTarget & MMapType<`on${keyof ServerEventMap}`, ((this: Server, ev: Event) => any) | null> & {
+export interface ServerConstructor {
+    (): Server;
+    new(): Server;
+}
+export interface Server extends EventTarget, MMapType<`on${keyof ServerEventMap}`, ((this: Server, ev: Event) => any) | null> {    
     listen(port: number): void;
 
     addEventListener<K extends keyof ServerEventMap>(type: K, listener: (this: Element, ev: ServerEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
     addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
     removeEventListener<K extends keyof ServerEventMap>(type: K, listener: (this: Element, ev: ServerEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
     removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-};
+}
