@@ -1,3 +1,4 @@
+
 type primitive = string | number | bigint | boolean | null | undefined;
 type concat<A extends string, B extends string> = `${A}${B}`
 type Nullable<T> = T | null | undefined;
