@@ -1,3 +1,4 @@
+import { NativeFactory } from "./native";
 
 type primitive = string | number | bigint | boolean | null | undefined;
 type concat<A extends string, B extends string> = `${A}${B}`
@@ -15,3 +16,4 @@ type EventTargetType<name extends string, E extends Event = Event, T = any> = {
 interface EventListenerType<E extends Event = Event, T = any> {
     (this: T, e: E): any
 }
+
