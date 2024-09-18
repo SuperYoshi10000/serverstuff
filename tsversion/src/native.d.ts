@@ -1,53 +1,18 @@
-export namespace NativeFactory {
-    class NavigatorImpl {
-        clipboard: Clipboard;
-        credentials: CredentialsContainer;
-        doNotTrack: string;
-        geolocation: Geolocation;
-        maxTouchPoints: number;
-        mediaCapabilities: MediaCapabilities;
-        mediaDevices: MediaDevices;
-        mediaSession: MediaSession;
-        permissions: Permissions;
-        serviceWorker: ServiceWorkerContainer;
-        userActivation: UserActivation;
-        wakeLock: WakeLock;
-        canShare(data?: ShareData): boolean;
-        getGamepads(): (Gamepad | null)[];
-        requestMIDIAccess(options?: MIDIOptions): Promise<MIDIAccess>;
-        requestMediaKeySystemAccess(keySystem: string, supportedConfigurations: MediaKeySystemConfiguration[]): Promise<MediaKeySystemAccess>;
-        sendBeacon(url: string | URL, data?: BodyInit | null): boolean;
-        share(data?: ShareData): Promise<void>;
-        vibrate(pattern: VibratePattern): boolean;
-        webdriver: boolean;
-        clearAppBadge(): Promise<void>;
-        setAppBadge(contents?: number): Promise<void>;
-        hardwareConcurrency: number;
-        registerProtocolHandler(scheme: string, url: string | URL): void;
-        appCodeName: string;
-        appName: string;
-        appVersion: string;
-        platform: string;
-        product: string;
-        productSub: string;
-        userAgent: string;
-        vendor: string;
-        vendorSub: string;
-        language: string;
-        languages: readonly string[];
-        locks: LockManager;
-        onLine: boolean;
-        mimeTypes: MimeTypeArray;
-        plugins: PluginArray;
-        storage: StorageManager;
-    }
+export type Writeable<T> = { -readonly [P in keyof T]: T[P] };
+export type Not<T, U> = U extends T ? never : any
+type a = Not<any, number>
 
+export namespace NativeFactory {
     export function init(): void;
     export function initWindow(): Window;
+    
+    export function getSynchronous<T>(promise: Promise<T>): T;
 
     export function callConstructor<T extends Object, C extends { (...args: any): T; } | { new(...args: any): T; }>(constructor: C, ...args: any[]): T;
     export function applyConstructor<T extends Object, C extends { (...args: any): T; } | { new(...args: any): T; }>(constructor: C, args: any[]): T;
     export function getConstructor<T extends Object, C extends { (...args: any): T; } | { new(...args: any): T; }>(constructor: C);
+
+    export function replaceObject<K extends PropertyKey, T>(obj: { [I in K]: T }, key: K, value: T): T;
 
     export type CacheEntry = RequestInfo | URL | [RequestInfo | URL, Response?] | {request: RequestInfo | URL, response?: Response}
     export function Cache(): Cache;
@@ -87,8 +52,29 @@ export namespace NativeFactory {
             protocol: string,
             search: string,
     ): Location;
-    export function Navigation(...args: any): any|"Navigation";
-    export function Navigator(): Navigator;
+    export function Navigation(...args: any):  any|"Navigation";
+    
+    export type CustomNavigator = Writeable<Navigator>
+    export function Navigator(navigator: CustomNavigator): Navigator;
+    export function Navigator(
+        userAgent?: string
+    ): Navigator;
+
+    export function Clipboard(): Clipboard;
+    export function CredentialsContainer(): CredentialsContainer;
+    export function Geolocation(): Geolocation;
+    export function MaxTouchPoints(): number;
+    export function MediaCapabilities(): MediaCapabilities;
+    export function MediaDevices(): MediaDevices;
+    export function MediaSession(): MediaSession;
+    export function Permissions(): Permissions;
+    export function ServiceWorkerContainer(): ServiceWorkerContainer;
+    export function UserActivation(): UserActivation;
+    export function WakeLock(): WakeLock;
+    export function Gamepad(): Gamepad;
+    export function MIDIAccess(options?: MIDIOptions): MIDIAccess;
+    export function MediaKeySystemAccess(keySystem: string, supportedConfigurations: MediaKeySystemConfiguration[]): MediaKeySystemAccess;
+
     export function Performance(): Performance;
     export function Scheduler(...args: any): any|"Scheduler";
     export function Screen(): Screen;

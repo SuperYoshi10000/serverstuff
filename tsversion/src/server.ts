@@ -28,7 +28,7 @@ export type PropertyType<K extends PropertyKey, T> = {
 
 export type EventTargetPropertyOf<K extends PropertyKey, T, M> = PropertyType<K, EventTargetOf<T, M>>;
 
-export class ServerRequest extends Request {
+export declare class ServerRequest extends Request {
     constructor(input: RequestInfo | URL, init?: RequestInit);
     
     clone(): Request;
@@ -39,7 +39,7 @@ export class ServerRequest extends Request {
     text(text?: string): Promise<string>;
 }
 
-export class ServerResponse extends Response {
+export declare class ServerResponse extends Response {
     constructor(init?: ResponseInit);
     constructor(status: number, statusText?: string);
     constructor(headers: HeadersInit, status?: number, statusText?: string);
@@ -56,7 +56,7 @@ export class ServerResponse extends Response {
     text(text?: string): Promise<string>;
 }
 
-export class HttpResponse extends XMLHttpRequestEventTarget {
+export declare class HttpResponse extends XMLHttpRequestEventTarget {
     constructor();
 
     readyState: number;
@@ -83,19 +83,19 @@ export class HttpResponse extends XMLHttpRequestEventTarget {
     removeEventListener<K extends keyof XMLHttpRequestEventMap>(type: K, listener: (this: XMLHttpRequest, ev: XMLHttpRequestEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
     removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     
-    onabort: ((this: HttpResponse, event: ServerEvent) => any) | null;
-    onerror: ((this: HttpResponse, event: ServerEvent) => any) | null;
-    onload: ((this: HttpResponse, event: ServerEvent) => any) | null;
-    onloadend: ((this: HttpResponse, event: ServerEvent) => any) | null;
-    onloadstart: ((this: HttpResponse, event: ServerEvent) => any) | null;
-    onprogress: ((this: HttpResponse, event: ServerEvent) => any) | null;
-    onreadystatechange: ((this: HttpResponse, event: ServerEvent) => any) | null;
-    ontimeout: ((this: HttpResponse, event: ServerEvent) => any) | null;
+    onabort: (<T extends ProgressEvent>(this: XMLHttpRequestEventTarget, event: T) => any) | null;
+    onerror: (<T extends ProgressEvent>(this: XMLHttpRequestEventTarget, event: T) => any) | null;
+    onload: (<T extends ProgressEvent>(this: XMLHttpRequestEventTarget, event: T) => any) | null;
+    onloadend: (<T extends ProgressEvent>(this: XMLHttpRequestEventTarget, event: T) => any) | null;
+    onloadstart: (<T extends ProgressEvent>(this: XMLHttpRequestEventTarget, event: T) => any) | null;
+    onprogress: (<T extends ProgressEvent>(this: XMLHttpRequestEventTarget, event: T) => any) | null;
+    onreadystatechange: (<T extends ProgressEvent>(this: XMLHttpRequestEventTarget, event: T) => any) | null;
+    ontimeout: (<T extends ProgressEvent>(this: XMLHttpRequestEventTarget, event: T) => any) | null;
 
     dispatchEvent(event: Event): boolean;
 }
 
-export class ServerRequestHandler extends EventTarget implements EventTargetOf<ServerRequest, ServerRequestEventMap<ServerRequest>> {
+export declare class ServerRequestHandler extends EventTarget implements EventTargetOf<ServerRequest, ServerRequestEventMap<ServerRequest>> {
     onreadystatechange: ((this: ServerRequest, ev: ServerEvent<ServerRequest>) => any) | null;
     onabort: ((this: ServerRequest, ev: ServerEvent<ServerRequest>) => any) | null;
     onerror: ((this: ServerRequest, ev: ServerEvent<ServerRequest>) => any) | null;
@@ -105,7 +105,7 @@ export class ServerRequestHandler extends EventTarget implements EventTargetOf<S
     onfile: ((this: ServerRequest, ev: ServerEvent<ServerRequest>) => any) | null;
     oncomplete: ((this: ServerRequest, ev: ServerEvent<ServerRequest>) => any) | null;
 }
-export class ServerResponseHandler extends EventTarget implements EventTargetOf<ServerRequest, ServerRequestEventMap<ServerResponse>> {
+export declare class ServerResponseHandler extends EventTarget implements EventTargetOf<ServerRequest, ServerRequestEventMap<ServerResponse>> {
     onreadystatechange: ((this: ServerRequest, ev: ServerEvent<ServerResponse>) => any) | null;
     onabort: ((this: ServerRequest, ev: ServerEvent<ServerResponse>) => any) | null;
     onerror: ((this: ServerRequest, ev: ServerEvent<ServerResponse>) => any) | null;
@@ -116,13 +116,17 @@ export class ServerResponseHandler extends EventTarget implements EventTargetOf<
     oncomplete: ((this: ServerRequest, ev: ServerEvent<ServerResponse>) => any) | null;
 }
 
-export class ServerEvent<T extends Body|XMLHttpRequest|Server = Body|XMLHttpRequest|Server> extends ProgressEvent implements EventOf<Server> {
+export declare class ServerEvent<T extends Body|XMLHttpRequestEventTarget|Server = Body|XMLHttpRequest|Server> extends ProgressEvent implements EventOf<Server> {
     readonly currentTarget: Server;
     readonly srcElement: Server;
     readonly target: Server;
 
     getPort(): number;
     getContent(): T;
+}
+
+export interface ServerEventListener<T extends Body|XMLHttpRequestEventTarget|Server = Body|XMLHttpRequest|Server> extends EventListener {
+    
 }
 
 export interface ServerEventMap<T extends Body|XMLHttpRequest = Body|XMLHttpRequest> {
@@ -142,7 +146,7 @@ export interface ServerRequestEventMap<T extends Body|XMLHttpRequest = Body|XMLH
     timeout: ServerEvent<T>;
 }
 
-export class Server extends EventTarget implements EventTargetOf<Server, ServerEventMap> {
+export declare class Server extends EventTarget implements EventTargetOf<Server, ServerEventMap> {
     constructor();
 
     onabort: ((this: Server, ev: ServerEvent<Body | XMLHttpRequest>) => any) | null;
